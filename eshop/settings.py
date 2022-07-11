@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django_render_partial',
     #out applaications
     'eshop_account',
+    'eshop_products',
 
 ]
 
