@@ -24,6 +24,7 @@ from .views import home_page
 urlpatterns = [
     path('', home_page),
     path('', include('eshop_account.urls')),
+    path('', include('eshop_products.urls')),
     path('admin/', admin.site.urls),
 ]
 if settings.DEBUG:
