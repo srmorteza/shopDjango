@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     #out applaications
     'eshop_account',
     'eshop_products',
+    'eshop_tag',
 
 ]
 

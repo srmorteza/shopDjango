@@ -1,6 +1,7 @@
 import os
 
 from django.db import models
+from django.db.models import Q
 
 
 def get_filename_ext(filepath):
@@ -26,6 +27,14 @@ class ProductsManager(models.Manager):
             return qs.first()
         else:
             return None
+
+    def search(self, query):
+        lookup = (
+                Q(title__icontains=query) |
+                Q(description__icontains=query) |
+                Q(tag__title__icontains=query)
+        )
+        return self.get_queryset().filter(lookup, active=True).distinct()
 
 
 class Product(models.Model):

@@ -34,6 +34,6 @@ class SearchProductsview(ListView):
         request = self.request
         query = request.GET.get('q')
         if query is not None:
-            return Product.objects.filter(active=True, title__icontains=query)
+            return Product.objects.search(query)
 
         return Product.objects.get_active_products()
