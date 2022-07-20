@@ -3,6 +3,8 @@ import os
 from django.db import models
 from django.db.models import Q
 
+from eshop_products_category.models import ProductsCategory
+
 
 def get_filename_ext(filepath):
     base_name = os.path.basename(filepath)
@@ -43,6 +45,7 @@ class Product(models.Model):
     price = models.IntegerField(verbose_name='قیمت')
     image = models.ImageField(upload_to=upload_image_path, null=True, blank=True, verbose_name='تصویر')
     active = models.BooleanField(default=False, verbose_name='فعال/غیر فعال')
+    category=models.ManyToManyField(ProductsCategory,blank=True,verbose_name='دسته بندی های ')
 
     objects = ProductsManager()
 

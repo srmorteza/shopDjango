@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'eshop_account',
     'eshop_products',
     'eshop_tag',
+    'eshop_products_category'
+
 
 ]
 
