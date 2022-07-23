@@ -1,9 +1,8 @@
+from django.db.models import Q
+from django.db import models
 import os
 
-from django.db import models
-from django.db.models import Q
-
-from eshop_products_category.models import ProductsCategory
+from eshop_products_category.models import ProductCategory
 
 
 def get_filename_ext(filepath):
@@ -19,12 +18,13 @@ def upload_image_path(instance, filename):
 
 
 # Create your models here.
+
 class ProductsManager(models.Manager):
     def get_active_products(self):
         return self.get_queryset().filter(active=True)
 
-    def get_product_by_category(self, category_name):
-        return self.get_queryset().filter(category__name__iexact=category_name, active=True)
+    def get_products_by_category(self, category_name):
+        return self.get_queryset().filter(categories__name__iexact=category_name, active=True)
 
     def get_by_id(self, product_id):
         qs = self.get_queryset().filter(id=product_id)
@@ -47,8 +47,8 @@ class Product(models.Model):
     description = models.TextField(verbose_name='توضیحات')
     price = models.IntegerField(verbose_name='قیمت')
     image = models.ImageField(upload_to=upload_image_path, null=True, blank=True, verbose_name='تصویر')
-    active = models.BooleanField(default=False, verbose_name='فعال/غیر فعال')
-    category = models.ManyToManyField(ProductsCategory, blank=True, verbose_name='دسته بندی های ')
+    active = models.BooleanField(default=False, verbose_name='فعال / غیرفعال')
+    categories = models.ManyToManyField(ProductCategory, blank=True, verbose_name="دسته بندی ها")
 
     objects = ProductsManager()
 
@@ -59,5 +59,5 @@ class Product(models.Model):
     def __str__(self):
         return self.title
 
-    def get_absolut_url(self):
+    def get_absolute_url(self):
         return f"/products/{self.id}/{self.title.replace(' ', '-')}"

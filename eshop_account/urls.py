@@ -5,5 +5,4 @@ from .views import login_user, register
 urlpatterns = [
     path('login', login_user),
     path('register', register),
-
 ]
