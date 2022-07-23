@@ -4,6 +4,7 @@ from django.views.generic import ListView
 
 # Create your views here.
 from eshop_products.models import Product
+from eshop_products_category.models import ProductsCategory
 
 
 class ProductsList(ListView):
@@ -19,10 +20,11 @@ class ProductsListByCategory(ListView):
     paginate_by = 3
 
     def get_queryset(self):
-        return Product.objects.get_active_products()
-
-
-
+        category_name = self.kwargs['category_name']
+        category = ProductsCategory.objects.filter(name__iexact=category_name).first()
+        if category is None:
+            raise Http404('صفحه مورد نظر یافت نشد')
+        return Product.objects.get_product_by_category(category_name)
 
 
 def product_detail(request, *args, **kwargs):
@@ -48,3 +50,11 @@ class SearchProductsview(ListView):
             return Product.objects.search(query)
 
         return Product.objects.get_active_products()
+
+
+def products_categories_partial(request):
+    categories=ProductsCategory.objects.all()
+    context = {
+        'categories':categories
+    }
+    return render(request, 'products/products_categories_partial.html', context)

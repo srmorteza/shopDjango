@@ -23,6 +23,9 @@ class ProductsManager(models.Manager):
     def get_active_products(self):
         return self.get_queryset().filter(active=True)
 
+    def get_product_by_category(self, category_name):
+        return self.get_queryset().filter(category__name__iexact=category_name, active=True)
+
     def get_by_id(self, product_id):
         qs = self.get_queryset().filter(id=product_id)
         if qs.count() == 1:
@@ -45,7 +48,7 @@ class Product(models.Model):
     price = models.IntegerField(verbose_name='قیمت')
     image = models.ImageField(upload_to=upload_image_path, null=True, blank=True, verbose_name='تصویر')
     active = models.BooleanField(default=False, verbose_name='فعال/غیر فعال')
-    category=models.ManyToManyField(ProductsCategory,blank=True,verbose_name='دسته بندی های ')
+    category = models.ManyToManyField(ProductsCategory, blank=True, verbose_name='دسته بندی های ')
 
     objects = ProductsManager()
 
